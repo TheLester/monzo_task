@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="thumbnail"
+            type="String"/>
+
+        <variable
+            name="headline"
+            type="String"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/articleThumbnail"
+            android:layout_width="@dimen/article_picture_size"
+            android:layout_height="@dimen/article_picture_size"
+            app:circleCrop="@{true}"
+            app:imageUrl="@{thumbnail}"
+            />
+
+        <TextView
+            android:id="@+id/articleHeadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="3dp"
+            android:fontFamily="sans-serif-regular"
+            android:text="@{headline}"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
+</layout>
