@@ -1,23 +1,37 @@
 # Monzo Code Test for Android Engineers
 
-<img src="The_Guardian.png" width="100%" />
+<img src="screenshoot2.png" width="100%" />
+<img src="screenshoot1.png" width="100%" />
 
-## Instructions
+## Completed task of Monzo Code Test for Android Engineers
 
-A developer at your company has been working on an app. The app uses the Guardian's news API to fetch headlines and display them to the user. Users can favourite articles that they like.
+I've spent a little bit more then 4 hours - just wanted to create finished task.
+Answers for instructions questions:
 
-You've inherited their unfinished project, and a [design mockup](The_Guardian.sketch). It looks like the project might have some bugs, and the user interface definitely needs some work.
+#what were your priorities, and why?
 
-Your job is to add the missing features shown in the enclosed specification, fixing any bugs you might come across and prioritising as you see fit. Feel free to re-work any aspect of the codebase you're not happy with: you own this project now.
+My main priority was fixing current UI issues and adding new according to sketch file.
+While concentrating on that, I noticed that initially, the project had Kotlin and Java files.
+I decided to convert all files to Kotlin, integrate epoxy library to simplify displaying and updating items and recyclerview
+(https://github.com/airbnb/epoxy)
 
-You should spend no more than 4 hours on the project - we know this isn't anywhere near enough time to complete the spec, so no pressure to build all the features or fix all the bugs! We're interested to see how far you get in that time and the decisions you make along the way. Please include a short note with your response, explaining:
+I think UI/UX is very important and that's why it was my main priority.
 
-- what were your priorities, and why?
-- if you had another two days, what would you have tackled next?
-- what would you change about the structure of the code?
-- what bugs did you find but not fix?
-- what would you change about the visual design of the app?
+#if you had another two days, what would you have tackled next?
 
-Make a zip of your solution and upload it to the link in the email inviting you to this repository. Let us know roughly how long you spent on the exercise - as we're a product company, we're looking for people with a strong product and design focus, as well as being good engineers.
+I would :
+-try to optimize issue on main screen (currently it has a little freezing on list screen start).
+-implement local store with Room or Realm and implement unit/UI tests.
+-changing architecture from MVP to MVVM (with architecture components from JetPack) would be also one of goals.
+-global error handling
+-if it's needed - handle screen rotation.
 
-We know it's tough to find a spare half day, so there's no hard deadline - if you're busy or travelling right now and won't find time in the next week or so, please let us know so we don't check-in with you too early!
+#what would you change about the visual design of the app?
+
+It's a hard question, because app is a demo and has only 2 screens.
+For detail screen - I would change toolbar color,
+because white back button and favorite icon can be invisible if content picture is white.
+Maybe transition animation of picture and title is good solution here.
+
+As for main screen with articles list - I wouldn't use cards to display a group of articles.
+But that requires a discussion with a designer or UX expert.
