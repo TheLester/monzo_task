@@ -1,21 +1,26 @@
 package com.monzo.androidtest.di
 
-import com.google.gson.Gson
+import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.google.gson.GsonBuilder
 import com.monzo.androidtest.HeadlinesApp
 import com.monzo.androidtest.R
 import com.monzo.androidtest.api.GuardianService
+import com.monzo.androidtest.api.deserializer.InstantConverter
 import com.monzo.androidtest.feature.articles.ArticlesPresenter
 import com.monzo.androidtest.feature.articles.ArticlesRepository
+import com.monzo.androidtest.feature.articles.detail.ArticleDetailPresenter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
+import org.threeten.bp.Instant
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 val articlesModule = module(override = true) {
     factory { ArticlesPresenter(get()) }
+    factory { ArticleDetailPresenter(get()) }
     single { ArticlesRepository(get()) }
 
 }
@@ -49,10 +54,15 @@ val networkModule = module(override = true) {
         val clientBuilder = OkHttpClient.Builder()
         clientBuilder.addInterceptor(authInterceptor)
         clientBuilder.addInterceptor(loggingInterceptor)
+        clientBuilder.addNetworkInterceptor(StethoInterceptor())
         clientBuilder.build()
     }
 
-    single { Gson() }
+    single {
+        GsonBuilder()
+                .registerTypeAdapter(Instant::class.java, InstantConverter())
+                .create()
+    }
 }
 
 val modules = listOf(articlesModule, networkModule)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,13 +12,23 @@
         <variable
             name="headline"
             type="String"/>
+
+        <variable
+            name="date"
+            type="String"/>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{clickListener}"
+        android:padding="8dp"
+        >
 
         <ImageView
             android:id="@+id/articleThumbnail"
@@ -25,17 +36,36 @@
             android:layout_height="@dimen/article_picture_size"
             app:circleCrop="@{true}"
             app:imageUrl="@{thumbnail}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <TextView
             android:id="@+id/articleHeadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="3dp"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-regular"
+            android:maxLines="2"
             android:text="@{headline}"
             android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/articleThumbnail"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="How sea otters help save the planet"
             />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/articleDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-regular"
+            android:text="@{date}"
+            android:textColor="@color/grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/articleHeadline"
+            app:layout_constraintTop_toBottomOf="@id/articleHeadline"
+            tools:text="11/07/2016"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

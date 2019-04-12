@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">The Guardian</string>
+
+    <string name="article_list_week_current">This week</string>
+    <string name="article_list_week_last">Last week</string>
+    <string name="article_list_week_earlier">Earlier</string>
 </resources>

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -35,6 +36,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintLayoutVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${rootProject.ext.navigationVersion}"
     implementation "androidx.navigation:navigation-fragment:${rootProject.ext.navigationVersion}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${rootProject.ext.navigationVersion}"
 
     implementation "com.google.android.material:material:${rootProject.ext.materialVersion}"
 
@@ -61,6 +63,13 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.0'
 
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    // time
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
+
+    // debug tools
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
     // Tests
     testImplementation 'junit:junit:4.12'

@@ -15,21 +15,34 @@ class ArticlesRepository(private val guardianService: GuardianService) {
                 .map { it.response.results }
                 .map {
                     it.map { article ->
-                        val thumbnail = article.fields?.thumbnail ?: ""
-                        val headline = article.fields?.headline ?: ""
-
-                        Article(article.id,
-                                thumbnail,
-                                article.sectionId,
-                                article.sectionName,
-                                article.webPublicationDate,
-                                headline,
-                                article.apiUrl)
+                        transform(article)
                     }
                 }
     }
 
-    fun getArticle(articleUrl: String): Single<ApiArticle> {
-        return guardianService.getArticle(articleUrl, "main,body,headline,thumbnail")
+    fun getArticle(articleUrl: String): Single<Article> {
+        return guardianService
+                .getArticle(articleUrl, "main,body,headline,thumbnail")
+                .map { transform(it) }
+    }
+
+    private fun transform(article: ApiArticle): Article {
+        val thumbnail = article.fields?.thumbnail ?: ""
+        val headline = article.fields?.headline ?: ""
+
+        val main = article.fields?.main ?: ""
+        val body = article.fields?.body ?: ""
+
+
+        return Article(article.id,
+                article.sectionId,
+                article.sectionName,
+                article.webPublicationDate,
+                article.apiUrl,
+                thumbnail = thumbnail,
+                title = headline,
+                main = main,
+                body = body
+        )
     }
 }

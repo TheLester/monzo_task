@@ -1,12 +1,12 @@
 package com.monzo.androidtest.api.model
 
-import java.util.*
+import org.threeten.bp.Instant
 
 data class ApiArticle(
         val id: String,
         val sectionId: String,
         val sectionName: String,
-        val webPublicationDate: Date,
+        val webPublicationDate: Instant,
         val webTitle: String,
         val webUrl: String,
         val apiUrl: String,

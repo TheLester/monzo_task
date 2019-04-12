@@ -10,8 +10,28 @@
     <fragment
         android:id="@+id/article_list_screen"
         android:name="com.monzo.androidtest.feature.articles.ArticlesFragment"
-        android:label="fragment_title_screen"
+        android:label="fragment_articles_screen"
         tools:layout="@layout/fragment_article_list">
+
+        <action
+            android:id="@+id/action_articles_to_detail"
+            app:destination="@id/article_detail_screen"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/article_detail_screen"
+        android:name="com.monzo.androidtest.feature.articles.detail.ArticleDetailFragment"
+        android:label="fragment_detail_screen"
+        tools:layout="@layout/fragment_article_detail">
+
+        <argument
+            android:name="articleUrl"
+            app:argType="string" />
 
     </fragment>
 </navigation>

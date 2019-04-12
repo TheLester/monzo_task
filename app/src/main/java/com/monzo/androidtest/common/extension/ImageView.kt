@@ -17,7 +17,6 @@ fun ImageView.setImageUrl(url: String?, circleCrop: Boolean? = false) {
 
     val glideRequest = Glide.with(this)
             .load(url)
-            .placeholder(R.color.lightGrey)
             .error(R.color.lightGrey)
             .transition(DrawableTransitionOptions.withCrossFade())
 

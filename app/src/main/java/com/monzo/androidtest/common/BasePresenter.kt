@@ -5,9 +5,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 
-open class BasePresenter<in V : BasePresenterView> {
+open class BasePresenter<V : BasePresenterView> {
     private val disposables = CompositeDisposable()
-    private var view: V? = null
+    protected var view: V? = null
 
     @CallSuper
     open fun register(view: V) {
