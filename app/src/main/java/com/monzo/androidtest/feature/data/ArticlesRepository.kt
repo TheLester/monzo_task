@@ -1,18 +1,19 @@
-package com.monzo.androidtest.feature.articles
+package com.monzo.androidtest.feature.data
 
 
-import com.monzo.androidtest.api.GuardianService
 import com.monzo.androidtest.api.model.ApiArticle
 import com.monzo.androidtest.feature.articles.model.Article
 import io.reactivex.Single
 
 
-class ArticlesRepository(private val guardianService: GuardianService) {
+class ArticlesRepository(
+        private val localStore: ArticlesLocalStore,
+        private val remoteDataSource: ArticlesRemoteDataSource
+) {
 
     fun latestFinTechArticles(): Single<List<Article>> {
-        return guardianService
+        return remoteDataSource
                 .searchArticles("fintech,brexit")
-                .map { it.response.results }
                 .map {
                     it.map { article ->
                         transform(article)
@@ -20,11 +21,21 @@ class ArticlesRepository(private val guardianService: GuardianService) {
                 }
     }
 
-    fun getArticle(articleUrl: String): Single<Article> {
-        return guardianService
-                .getArticle(articleUrl, "main,body,headline,thumbnail")
-                .map { transform(it) }
-    }
+    fun getArticle(articleUrl: String): Single<Article> =
+            remoteDataSource.fetchArticle(articleUrl)
+                    .map { transform(it) }
+
+
+    fun favoriteArticle(articleId: String) =
+            localStore.addToFavorite(articleId)
+
+
+    fun removeFromFavoriteArticle(articleId: String) =
+            localStore.removeFromFavorites(articleId)
+
+
+    fun isFavorite(articleId: String): Boolean =
+            localStore.getFavoriteArticleIds().contains(articleId)
 
     private fun transform(article: ApiArticle): Article {
         val thumbnail = article.fields?.thumbnail ?: ""

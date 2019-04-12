@@ -7,8 +7,10 @@ import com.monzo.androidtest.R
 import com.monzo.androidtest.api.GuardianService
 import com.monzo.androidtest.api.deserializer.InstantConverter
 import com.monzo.androidtest.feature.articles.ArticlesPresenter
-import com.monzo.androidtest.feature.articles.ArticlesRepository
 import com.monzo.androidtest.feature.articles.detail.ArticleDetailPresenter
+import com.monzo.androidtest.feature.data.ArticlesLocalStore
+import com.monzo.androidtest.feature.data.ArticlesRemoteDataSource
+import com.monzo.androidtest.feature.data.ArticlesRepository
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,8 +23,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 val articlesModule = module(override = true) {
     factory { ArticlesPresenter(get()) }
     factory { ArticleDetailPresenter(get()) }
-    single { ArticlesRepository(get()) }
 
+    single { ArticlesLocalStore() }
+    single { ArticlesRemoteDataSource(get()) }
+    single { ArticlesRepository(get(), get()) }
 }
 
 internal const val BASE_URL = "https://content.guardianapis.com"

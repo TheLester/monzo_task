@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.epoxy.DataBindingEpoxyModel
 import com.monzo.androidtest.ItemArticleBindingModel_
 import com.monzo.androidtest.R
@@ -15,6 +16,7 @@ import com.monzo.androidtest.common.simpleController
 import com.monzo.androidtest.feature.articles.model.Article
 import com.monzo.androidtest.itemHeader
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_article_list.*
 import org.koin.android.ext.android.inject
 import org.threeten.bp.LocalDate
@@ -22,11 +24,14 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.temporal.WeekFields
 
 
-class ArticlesFragment : BaseEpoxyFragment(), ArticlesView {
+class ArticlesFragment : BaseEpoxyFragment(),
+        ArticlesView, SwipeRefreshLayout.OnRefreshListener {
+
     private val presenter: ArticlesPresenter by inject()
     private val articles = mutableListOf<Article>()
 
     private var currentWeek: Int = 0
+    private val onRefreshAction: PublishSubject<Unit> = PublishSubject.create()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -36,11 +41,11 @@ class ArticlesFragment : BaseEpoxyFragment(), ArticlesView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         currentWeek = LocalDate.now().get(WeekFields.ISO.weekOfYear())
 
         presenter.register(this)
-
+        articlesSwipeRefreshLayout.setOnRefreshListener(this)
+        onRefreshAction.onNext(Unit)
     }
 
     override fun onDestroyView() {
@@ -48,9 +53,28 @@ class ArticlesFragment : BaseEpoxyFragment(), ArticlesView {
         super.onDestroyView()
     }
 
+    override fun onError(throwable: Throwable) {
+        handleError(throwable)
+    }
+
     override fun epoxyController() = simpleController {
 
+        // display favorites first
+
+        articles.filter { presenter.isFavorite(it.id) }.let {
+            if (it.isEmpty()) return@let
+
+            itemHeader {
+                id("Favourites")
+                headerText(getString(R.string.article_list_favourites))
+            }
+
+            CardGroup(getArticleModels(it)).addTo(this)
+        }
+
+        // display current,last week and earlier articles
         val groupedArticles = articles
+                .filter { !presenter.isFavorite(it.id) }
                 .sortedByDescending { it.published.epochSecond }
                 .groupBy {
 
@@ -98,11 +122,6 @@ class ArticlesFragment : BaseEpoxyFragment(), ArticlesView {
 
     override fun epoxyRecyclerView() = articlesRecyclerview
 
-    override fun onArticleClicked(): Observable<Article> {
-        // TODO: return the article clicked on
-        return Observable.empty()
-    }
-
     override fun showArticles(articles: List<Article>) {
 
         with(this.articles) {
@@ -112,15 +131,12 @@ class ArticlesFragment : BaseEpoxyFragment(), ArticlesView {
         epoxyController.requestModelBuild()
     }
 
-    override fun onRefreshAction(): Observable<Any> {
-        return Observable.just(Unit)
-//        return Observable.create<Any> { emitter ->
-//            swipeRefreshLayout!!.setOnRefreshListener { emitter.onNext(null) }
-//            emitter.setCancellable { swipeRefreshLayout!!.setOnRefreshListener(null) }
-//        }.startWith(Event.IGNORE)
+    override fun onRefresh() {
+        onRefreshAction.onNext(Unit)
     }
 
-    override fun openArticleDetail() {
+    override fun onRefreshAction(): Observable<Unit> {
+        return onRefreshAction.share()
     }
 
     override fun showRefreshing(isRefreshing: Boolean) {

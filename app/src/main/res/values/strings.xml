@@ -4,4 +4,10 @@
     <string name="article_list_week_current">This week</string>
     <string name="article_list_week_last">Last week</string>
     <string name="article_list_week_earlier">Earlier</string>
+
+    <string name="article_list_favourites">Favourites</string>
+    <string name="article_detail_favorite_added">Added to favorites</string>
+    <string name="article_detail_favorite_removed">Removed from favorites</string>
+
+    <string name="error_generic">Something wrong happened. Try again later.</string>
 </resources>

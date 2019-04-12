@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.Html"/>
 
         <variable
             name="imageUrl"
@@ -29,8 +30,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
@@ -70,12 +70,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
+                        <CheckBox
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
+                            android:checked="@={fragment.isFavorite}"
+                            android:layout_margin="16dp"
+                            android:onClick="@{fragment::onClickFavorite}"
                             android:layout_gravity="end"
-                            android:src="@drawable/ic_favorite_border_white_24dp"/>
+                            android:button="@drawable/btn_favorite"/>
                     </FrameLayout>
 
                 </androidx.appcompat.widget.Toolbar>
@@ -105,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{title}"
                     android:textSize="20sp"
+                    android:textColor="@color/textColorBlack"
                     tools:text="How sea otters help save the planet"
                     />
 
@@ -112,7 +115,8 @@
                     android:id="@+id/contentTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{content}"
+                    android:layout_marginTop="8dp"
+                    android:text="@{Html.fromHtml(content)}"
                     android:textColor="@color/grey"
                     tools:text="How sea otters help save the planet"
                     />
