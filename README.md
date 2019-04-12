@@ -5,7 +5,7 @@
 
 ## Completed task of Monzo Code Test for Android Engineers
 
-I've spent a little bit more then 4 hours - just wanted to create finished task.
+I've spent a little bit more then 4 hours - just wanted to create finished task. Something around 6-7 hours.
 Answers for instructions questions:
 
 #what were your priorities, and why?
